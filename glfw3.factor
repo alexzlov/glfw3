@@ -45,7 +45,13 @@ FUNCTION:   GLFWwindow       glfwCreateWindow ( int width,
                                                 GLFWmonitor* monitor, 
                                                 GLFWwindow* share ) ;
 
-: glfw-create-window ( width height title  -- GLFWwindow )
-    utf8 string>alien >c-ptr ! factor string to *char
-    glfwGetPrimaryMonitor
+<PRIVATE
+: string>char* ( string -- char* ) utf8 string>alien >c-ptr ;
+PRIVATE>
+
+: glfw-create-window ( width height title  -- GLFWwindow* )
+    string>char*              ! factor string to *char
+    f                         ! use glfwGetPrimaryMonitor for fullscreen mode
     f glfwCreateWindow ;
+
+! : glfw-create-window-fullscreen ( width height title -- GLFWWindow* ) ;
