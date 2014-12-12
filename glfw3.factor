@@ -1,6 +1,6 @@
 ! Copyright (C) 2014 alex_zlov
 ! See http://factorcode.org/license.txt for BSD license.
-USING: alien alien.c-types alien.libraries alien.parser alien.syntax 
+USING: alien alien.c-types alien.libraries alien.parser alien.syntax
        alien.strings system combinators io.encodings.utf8 ;
 
 IN: glfw3
@@ -8,13 +8,13 @@ IN: glfw3
 << "glfw3" {
     { [ os windows? ] [ "glfw3.dll" ] }
     { [ os macosx?  ] [ "libglfw3.3.0.dylib" ] }
-    { [ os unix?    ] [ "libflfw.so.3" ] }
+    { [ os unix?    ] [ "libglfw.so.3.0" ] }
 } cond cdecl add-library >>
 
 LIBRARY: glfw3
 
 ! ====================================================================================
-!                                 GLFW API TOKENS 
+!                                 GLFW API TOKENS
 ! ====================================================================================
 CONSTANT: GLFW_VERSION_MAJOR        3
 CONSTANT: GLFW_VERSION_MINOR        0
@@ -149,10 +149,10 @@ TYPEDEF:    GLFWwindow*      GLFWwindow
 
 FUNCTION:   int              glfwInit ( ) ;
 FUNCTION:   GLFWmonitor      glfwGetPrimaryMonitor ( ) ;
-FUNCTION:   GLFWwindow       glfwCreateWindow ( int width, 
-                                                int height, 
-                                                char* title, 
-                                                GLFWmonitor* monitor, 
+FUNCTION:   GLFWwindow       glfwCreateWindow ( int width,
+                                                int height,
+                                                char* title,
+                                                GLFWmonitor* monitor,
                                                 GLFWwindow* share ) ;
 
 <PRIVATE
