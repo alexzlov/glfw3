@@ -22,13 +22,55 @@ CONSTANT: GLFW_VERSION_REVISION         4
 CONSTANT: GLFW_RELEASE                  0
 CONSTANT: GLFW_PRESS                    1
 CONSTANT: GLFW_REPEAT                   2
-
+! ------------------------------------------------------------------------------------
 ! The unknown key
 CONSTANT: GLFW_KEY_UNKNOWN              -1
-
+! ------------------------------------------------------------------------------------
 ! Printable keys
-CONSTANT: GLFW_KEY_SPACE                32
-CONSTANT: GLFW_KEY_APOSTROPHE           39 ! '
+CONSTANT: GLFW_KEY_SPACE           32
+CONSTANT: GLFW_KEY_APOSTROPHE      39 ! '
+CONSTANT: GLFW_KEY_COMMA           44 ! ,
+CONSTANT: GLFW_KEY_MINUS           45 ! -
+CONSTANT: GLFW_KEY_PERIOD          46 ! .
+CONSTANT: GLFW_KEY_SLASH           47 ! /
+CONSTANT: GLFW_KEY_0               48
+CONSTANT: GLFW_KEY_1               49
+CONSTANT: GLFW_KEY_2               50
+CONSTANT: GLFW_KEY_3               51
+CONSTANT: GLFW_KEY_4               52
+CONSTANT: GLFW_KEY_5               53
+CONSTANT: GLFW_KEY_6               54
+CONSTANT: GLFW_KEY_7               55
+CONSTANT: GLFW_KEY_8               56
+CONSTANT: GLFW_KEY_9               57
+CONSTANT: GLFW_KEY_SEMICOLON       59 ! ;
+CONSTANT: GLFW_KEY_EQUAL           61 ! =
+CONSTANT: GLFW_KEY_A               65
+CONSTANT: GLFW_KEY_B               66
+CONSTANT: GLFW_KEY_C               67
+CONSTANT: GLFW_KEY_D               68
+CONSTANT: GLFW_KEY_E               69
+CONSTANT: GLFW_KEY_F               70
+CONSTANT: GLFW_KEY_G               71
+CONSTANT: GLFW_KEY_H               72
+CONSTANT: GLFW_KEY_I               73
+CONSTANT: GLFW_KEY_J               74
+CONSTANT: GLFW_KEY_K               75
+CONSTANT: GLFW_KEY_L               76
+CONSTANT: GLFW_KEY_M               77
+CONSTANT: GLFW_KEY_N               78
+CONSTANT: GLFW_KEY_O               79
+CONSTANT: GLFW_KEY_P               80
+CONSTANT: GLFW_KEY_Q               81
+CONSTANT: GLFW_KEY_R               82
+CONSTANT: GLFW_KEY_S               83
+CONSTANT: GLFW_KEY_T               84
+CONSTANT: GLFW_KEY_U               85
+CONSTANT: GLFW_KEY_V               86
+CONSTANT: GLFW_KEY_W               87
+CONSTANT: GLFW_KEY_X               88
+CONSTANT: GLFW_KEY_Y               89
+CONSTANT: GLFW_KEY_Z               90
 
 
 C-TYPE: GLFWmonitor
@@ -49,9 +91,14 @@ FUNCTION:   GLFWwindow       glfwCreateWindow ( int width,
 : string>char* ( string -- char* ) utf8 string>alien >c-ptr ;
 PRIVATE>
 
+! Creates window with specified size
 : glfw-create-window ( width height title  -- GLFWwindow* )
     string>char*              ! factor string to *char
     f                         ! use glfwGetPrimaryMonitor for fullscreen mode
     f glfwCreateWindow ;
 
-! : glfw-create-window-fullscreen ( width height title -- GLFWWindow* ) ;
+! Creates fullscreen window with specified resolution
+: glfw-create-window-fullscreen ( width height title -- GLFWwindow* )
+    string>char*
+    glfwGetPrimaryMonitor
+    f glfwCreateWindow ;
