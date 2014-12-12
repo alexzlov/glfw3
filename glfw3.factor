@@ -1,4 +1,4 @@
-! Copyright (C) 2014 man213
+! Copyright (C) 2014 alex_zlov
 ! See http://factorcode.org/license.txt for BSD license.
 USING: alien alien.c-types alien.libraries alien.parser alien.syntax 
        alien.strings system combinators io.encodings.utf8 ;
@@ -16,15 +16,15 @@ LIBRARY: glfw3
 ! ====================================================================================
 !                                 GLFW API TOKENS 
 ! ====================================================================================
-CONSTANT: GLFW_VERSION_MAJOR            3
-CONSTANT: GLFW_VERSION_MINOR            0
-CONSTANT: GLFW_VERSION_REVISION         4
-CONSTANT: GLFW_RELEASE                  0
-CONSTANT: GLFW_PRESS                    1
-CONSTANT: GLFW_REPEAT                   2
+CONSTANT: GLFW_VERSION_MAJOR        3
+CONSTANT: GLFW_VERSION_MINOR        0
+CONSTANT: GLFW_VERSION_REVISION     4
+CONSTANT: GLFW_RELEASE              0
+CONSTANT: GLFW_PRESS                1
+CONSTANT: GLFW_REPEAT               2
 ! ------------------------------------------------------------------------------------
 ! The unknown key
-CONSTANT: GLFW_KEY_UNKNOWN              -1
+CONSTANT: GLFW_KEY_UNKNOWN         -1
 ! ------------------------------------------------------------------------------------
 ! Printable keys
 CONSTANT: GLFW_KEY_SPACE           32           CONSTANT: GLFW_KEY_E               69
@@ -65,7 +65,47 @@ CONSTANT: GLFW_KEY_BACKSPACE       259
 CONSTANT: GLFW_KEY_INSERT          260
 CONSTANT: GLFW_KEY_DELETE          261
 CONSTANT: GLFW_KEY_RIGHT           262
+CONSTANT: GLFW_KEY_LEFT            263
+CONSTANT: GLFW_KEY_DOWN            264
+CONSTANT: GLFW_KEY_UP              265
+CONSTANT: GLFW_KEY_PAGE_UP         266
+CONSTANT: GLFW_KEY_PAGE_DOWN       267
+CONSTANT: GLFW_KEY_HOME            268
+CONSTANT: GLFW_KEY_END             269
+CONSTANT: GLFW_KEY_CAPS_LOCK       280
+CONSTANT: GLFW_KEY_SCROLL_LOCK     281
+CONSTANT: GLFW_KEY_NUM_LOCK        282
+CONSTANT: GLFW_KEY_PRINT_SCREEN    283
+CONSTANT: GLFW_KEY_PAUSE           284
+CONSTANT: GLFW_KEY_F1              290
+CONSTANT: GLFW_KEY_F2              291
+CONSTANT: GLFW_KEY_F3              292
+CONSTANT: GLFW_KEY_F4              293
+CONSTANT: GLFW_KEY_F5              294 
+CONSTANT: GLFW_KEY_F6              295
+CONSTANT: GLFW_KEY_F7              296
+CONSTANT: GLFW_KEY_F8              297
+CONSTANT: GLFW_KEY_F9              298
+CONSTANT: GLFW_KEY_F10             299
+CONSTANT: GLFW_KEY_F11             300
+CONSTANT: GLFW_KEY_F12             301
+CONSTANT: GLFW_KEY_F13             302
+CONSTANT: GLFW_KEY_F14             303
+CONSTANT: GLFW_KEY_F15             304
+CONSTANT: GLFW_KEY_F16             305
+CONSTANT: GLFW_KEY_F17             306
 
+
+
+
+
+
+
+
+
+
+
+! ------------------------------------------------------------------------------------
 C-TYPE: GLFWmonitor
 C-TYPE: GLFWwindow
 
