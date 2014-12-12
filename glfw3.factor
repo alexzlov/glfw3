@@ -1,7 +1,8 @@
 ! Copyright (C) 2014 alex_zlov
 ! See http://factorcode.org/license.txt for BSD license.
 USING: alien alien.c-types alien.libraries alien.parser alien.syntax
-       alien.strings system combinators io.encodings.utf8 ;
+alien.strings system combinators io.encodings.utf8 classes.struct
+alien.data ;
 
 IN: glfw3
 
@@ -187,13 +188,51 @@ CONSTANT: GLFW_CURSOR_DISABLED        0x00034003
 
 CONSTANT: GLFW_CONNECTED              0x00040001
 CONSTANT: GLFW_DISCONNECTED           0x00040002
-! ------------------------------------------------------------------------------------
+! =======================================================================================
+!                                   GLFW API types
+! =======================================================================================
+
 C-TYPE: GLFWmonitor
 C-TYPE: GLFWwindow
 
 TYPEDEF:    GLFWmonitor*     GLFWmonitor
 TYPEDEF:    GLFWwindow*      GLFWwindow
 
+CALLBACK: void GLFWglproc               ( ) ;
+CALLBACK: void GLFWerrorfun             ( int errorCode, char* errorMessage ) ;
+CALLBACK: void GLFWwindowposfun         ( GLFWwindow window, int x, int y ) ;
+CALLBACK: void GLFWwindowsizefun        ( GLFWwindow window, int x, int y ) ;
+CALLBACK: void GLFWwindowclosefun       ( GLFWwindow window ) ;
+CALLBACK: void GLFWwindowrefreshfun     ( GLFWwindow window ) ;
+CALLBACK: void GLFWwindowfocusfun       ( GLFWwindow window, int n ) ;
+CALLBACK: void GLFWwindowiconifyfun     ( GLFWwindow window, int n ) ;
+CALLBACK: void GFLFWframebuffersizefun  ( GLFWwindow window, int x, int y ) ;
+CALLBACK: void GLFWmousebuttonfun       ( GLFWwindow window, int a, int b, int c ) ;
+CALLBACK: void GLFWcursorposfun         ( GLFWwindow window, double x, double y ) ;
+CALLBACK: void GLFWcursorenterfun       ( GLFWwindow window, int a ) ;
+CALLBACK: void GLFWscrollfun            ( GLFWwindow window, double x, double y ) ;
+CALLBACK: void GLFWkeyfun               ( GLFWwindow window, int a, int b, int c, int d ) ;
+CALLBACK: void GLFWcharfun              ( GLFWwindow window, uint code ) ;
+CALLBACK: void GLFWmonitorfun           ( GLFWmonitor monitor, uint code ) ;
+
+STRUCT: GLFWvidmode
+    { width       int }
+    { height      int }
+    { redBits     int }
+    { greenBits   int }
+    { blueBits    int }
+    { refreshRate int } ;
+TYPEDEF: GLFWvidmode glfw-vidmode
+
+STRUCT: GLFWgammaramp
+    { red   ushort }
+    { green ushort }
+    { blue  ushort }
+    { size  uint   } ;
+TYPEDEF: GLFWgammaramp glfw-gamma-ramp
+! =======================================================================================
+!                                GLFW API functions
+! =======================================================================================
 FUNCTION:   int              glfwInit ( ) ;
 FUNCTION:   GLFWmonitor      glfwGetPrimaryMonitor ( ) ;
 FUNCTION:   GLFWwindow       glfwCreateWindow ( int width,
@@ -201,9 +240,18 @@ FUNCTION:   GLFWwindow       glfwCreateWindow ( int width,
                                                 char* title,
                                                 GLFWmonitor* monitor,
                                                 GLFWwindow* share ) ;
+FUNCTION:   void             glfwTerminate ( ) ;
+FUNCTION:   void             glfwGetVersion ( int* major, int* minor, int* rev ) ;
+FUNCTION:   char*            glfwGetVersionString ( ) ;
+FUNCTION:   GLFWvidmode*     glfwGetVideoMode ( GLFWmonitor* monitor ) ;
+FUNCTION:   GLFWerrorfun*    glfwSetErrorCallback ( GLFWerrorfun cbfunc ) ;
+FUNCTION:   GLFWmonitor**    glfwGetMonitors ( int* count ) ;
+
+
 
 <PRIVATE
 : string>char* ( string -- char* ) utf8 string>alien >c-ptr ;
+: int>int*     ( int    -- int*  ) int <ref> ;
 PRIVATE>
 
 ! Creates window with specified size
@@ -217,3 +265,12 @@ PRIVATE>
     string>char*
     glfwGetPrimaryMonitor
     f glfwCreateWindow ;
+
+: glfw-terminate ( -- ) glfwTerminate ;
+
+! Outputs something like "3.0.4 X11 GLX glXgetProcAddress clock_gettime /dev/js shared"
+: glfw-get-version-string ( -- version-string )
+    glfwGetVersionString utf8 alien>string ;
+
+: glfw-get-monitors ( count -- GLFWmonitor** )
+    int>int* glfwGetMonitors ;
