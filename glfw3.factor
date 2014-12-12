@@ -2,7 +2,7 @@
 ! See http://factorcode.org/license.txt for BSD license.
 USING: alien alien.c-types alien.libraries alien.parser alien.syntax
 alien.strings system combinators io.encodings.utf8 classes.struct
-alien.data ;
+alien.data kernel ;
 
 IN: glfw3
 
@@ -233,25 +233,42 @@ TYPEDEF: GLFWgammaramp glfw-gamma-ramp
 ! =======================================================================================
 !                                GLFW API functions
 ! =======================================================================================
-FUNCTION:   int              glfwInit ( ) ;
+FUNCTION:   int              glfwInit              ( ) ;
 FUNCTION:   GLFWmonitor      glfwGetPrimaryMonitor ( ) ;
-FUNCTION:   GLFWwindow       glfwCreateWindow ( int width,
-                                                int height,
-                                                char* title,
-                                                GLFWmonitor* monitor,
-                                                GLFWwindow* share ) ;
-FUNCTION:   void             glfwTerminate ( ) ;
-FUNCTION:   void             glfwGetVersion ( int* major, int* minor, int* rev ) ;
-FUNCTION:   char*            glfwGetVersionString ( ) ;
-FUNCTION:   GLFWvidmode*     glfwGetVideoMode ( GLFWmonitor* monitor ) ;
-FUNCTION:   GLFWerrorfun*    glfwSetErrorCallback ( GLFWerrorfun cbfunc ) ;
-FUNCTION:   GLFWmonitor**    glfwGetMonitors ( int* count ) ;
-
-
+FUNCTION:   GLFWwindow       glfwCreateWindow      ( int width,
+                                                     int height,
+                                                     char* title,
+                                                     GLFWmonitor* monitor,
+                                                     GLFWwindow* share ) ;
+FUNCTION:   void             glfwTerminate         ( ) ;
+FUNCTION:   void             glfwGetVersion        ( int* major, int* minor, int* rev ) ;
+FUNCTION:   char*            glfwGetVersionString  ( ) ;
+FUNCTION:   GLFWvidmode*     glfwGetVideoMode      ( GLFWmonitor* monitor ) ;
+FUNCTION:   GLFWerrorfun*    glfwSetErrorCallback  ( GLFWerrorfun cbfunc ) ;
+FUNCTION:   GLFWmonitor**    glfwGetMonitors       ( int* count ) ;
+FUNCTION:   void             glfwGetMonitorPos     ( GLFWmonitor* monitor,
+                                                     int* xpos,
+                                                     int* ypos ) ;
+FUNCTION:   void             glfwGetMonitorPhysicalSize ( GLFWmonitor* monitor,
+                                                          int* width,
+                                                          int* height ) ;
+FUNCTION:   char*            glfwGetMonitorName    ( GLFWmonitor* monitor ) ;
+FUNCTION:   GLFWmonitorfun   glfwSetMonitorCallback ( GLFWmonitorfun cbfun ) ;
+FUNCTION:   GLFWvidmode*     glfwGetVideoModes     ( GLFWmonitor* monitor, int* count ) ;
+FUNCTION:   void             glfwSetGamma          ( GLFWmonitor* monitor, float gamma ) ;
+FUNCTION:   GLFWgammaramp*   glfwGetGammaRamp      ( GLFWmonitor* monitor ) ;
+FUNCTION:   void             glfwSetGammaRamp      ( GLFWmonitor* monitor, GLFWgammaramp* ramp ) ;
+FUNCTION:   void             glfwDefaultWindowHints ( ) ;
+FUNCTION:   void             glfwWindowHint        ( int target, int hint ) ;
+FUNCTION:   void             glfwDestroyWindow     ( GLFWwindow* window ) ;
+FUNCTION:   int              glfwWindowShouldClose ( GLFWwindow* window ) ;
+FUNCTION:   void             glfwSetWindowShouldClose ( GLFWwindow* window, int value ) ;
+FUNCTION:   void             glfwSetWindowTitle    ( GLFWwindow* window, char* title ) ;
 
 <PRIVATE
 : string>char* ( string -- char* ) utf8 string>alien >c-ptr ;
 : int>int*     ( int    -- int*  ) int <ref> ;
+: char*>string ( char*  -- str   ) utf8 alien>string ;
 PRIVATE>
 
 ! Creates window with specified size
@@ -265,7 +282,6 @@ PRIVATE>
     string>char*
     glfwGetPrimaryMonitor
     f glfwCreateWindow ;
-
 : glfw-terminate ( -- ) glfwTerminate ;
 
 ! Outputs something like "3.0.4 X11 GLX glXgetProcAddress clock_gettime /dev/js shared"
@@ -274,3 +290,12 @@ PRIVATE>
 
 : glfw-get-monitors ( count -- GLFWmonitor** )
     int>int* glfwGetMonitors ;
+
+: glfw-get-monitor-name ( -- name )
+    glfwGetPrimaryMonitor glfwGetMonitorName char*>string ;
+
+: glfw-get-video-modes ( count -- mode-struct )
+    glfwGetPrimaryMonitor swap int>int* glfwGetVideoModes ;
+
+: glfw-set-window-title ( GLFWwindow* title -- )
+    string>char* glfwSetWindowTitle ;
