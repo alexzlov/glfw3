@@ -260,11 +260,19 @@ FUNCTION:   GLFWgammaramp*   glfwGetGammaRamp      ( GLFWmonitor* monitor ) ;
 FUNCTION:   void             glfwSetGammaRamp      ( GLFWmonitor* monitor, GLFWgammaramp* ramp ) ;
 FUNCTION:   void             glfwDefaultWindowHints ( ) ;
 FUNCTION:   void             glfwWindowHint        ( int target, int hint ) ;
-FUNCTION:   void             glfwDestroyWindow     ( GLFWwindow* window ) ;
+FUNCTION:   void             glfwDestroyWindow     ( GLFWwindow* window ) ; ! not working ...
 FUNCTION:   int              glfwWindowShouldClose ( GLFWwindow* window ) ;
 FUNCTION:   void             glfwSetWindowShouldClose ( GLFWwindow* window, int value ) ;
 FUNCTION:   void             glfwSetWindowTitle    ( GLFWwindow* window, char* title ) ;
-
+FUNCTION:   void             glfwGetWindowPos      ( GLFWwindow* window, int* xpos, int* ypos ) ;
+FUNCTION:   void             glfwSetWindowPos      ( GLFWwindow* window, int xpos, int ypos ) ;
+FUNCTION:   void             glfwGetWindowSize     ( GLFWwindow* window, int* width, int* height ) ;
+FUNCTION:   void             glfwSetWindowSize     ( GLFWwindow* window, int width, int height ) ;
+FUNCTION:   void             glfwGetFramebufferSize ( GLFWwindow* window, int* width, int* height ) ;
+FUNCTION:   void             glfwIconifyWindow     ( GLFWwindow* window ) ;
+FUNCTION:   void             glfwRestoreWindow     ( GLFWwindow* window ) ;
+FUNCTION:   void             glfwShowWindow        ( GLFWwindow* window ) ;
+FUNCTION:   void             glfwHideWindow        ( GLFWwindow* window ) ;
 <PRIVATE
 : string>char* ( string -- char* ) utf8 string>alien >c-ptr ;
 : int>int*     ( int    -- int*  ) int <ref> ;
@@ -276,6 +284,9 @@ PRIVATE>
     string>char*              ! factor string to *char
     f                         ! use glfwGetPrimaryMonitor for fullscreen mode
     f glfwCreateWindow ;
+
+: create ( -- window* )
+    glfwInit drop 200 200 "test" glfw-create-window ;
 
 ! Creates fullscreen window with specified resolution
 : glfw-create-window-fullscreen ( width height title -- GLFWwindow* )
@@ -297,5 +308,6 @@ PRIVATE>
 : glfw-get-video-modes ( count -- mode-struct )
     glfwGetPrimaryMonitor swap int>int* glfwGetVideoModes ;
 
+! Not working...
 : glfw-set-window-title ( GLFWwindow* title -- )
     string>char* glfwSetWindowTitle ;
