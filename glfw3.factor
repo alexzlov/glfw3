@@ -233,46 +233,47 @@ TYPEDEF: GLFWgammaramp glfw-gamma-ramp
 ! =======================================================================================
 !                                GLFW API functions
 ! =======================================================================================
-FUNCTION:   int              glfwInit              ( ) ;
-FUNCTION:   GLFWmonitor      glfwGetPrimaryMonitor ( ) ;
-FUNCTION:   GLFWwindow       glfwCreateWindow      ( int width,
-                                                     int height,
-                                                     char* title,
-                                                     GLFWmonitor* monitor,
-                                                     GLFWwindow* share ) ;
-FUNCTION:   void             glfwTerminate         ( ) ;
-FUNCTION:   void             glfwGetVersion        ( int* major, int* minor, int* rev ) ;
-FUNCTION:   char*            glfwGetVersionString  ( ) ;
-FUNCTION:   GLFWvidmode*     glfwGetVideoMode      ( GLFWmonitor* monitor ) ;
-FUNCTION:   GLFWerrorfun*    glfwSetErrorCallback  ( GLFWerrorfun cbfunc ) ;
-FUNCTION:   GLFWmonitor**    glfwGetMonitors       ( int* count ) ;
-FUNCTION:   void             glfwGetMonitorPos     ( GLFWmonitor* monitor,
-                                                     int* xpos,
-                                                     int* ypos ) ;
+FUNCTION:   int              glfwInit                   ( ) ;
+FUNCTION:   GLFWmonitor      glfwGetPrimaryMonitor      ( ) ;
+FUNCTION:   GLFWwindow       glfwCreateWindow           ( int width,
+                                                          int height,
+                                                          char* title,
+                                                          GLFWmonitor* monitor,
+                                                          GLFWwindow* share ) ;
+FUNCTION:   void             glfwTerminate              ( ) ;
+FUNCTION:   void             glfwGetVersion             ( int* major, int* minor, int* rev ) ;
+FUNCTION:   char*            glfwGetVersionString       ( ) ;
+FUNCTION:   GLFWvidmode*     glfwGetVideoMode           ( GLFWmonitor* monitor ) ;
+FUNCTION:   GLFWerrorfun*    glfwSetErrorCallback       ( GLFWerrorfun cbfunc ) ;
+FUNCTION:   GLFWmonitor**    glfwGetMonitors            ( int* count ) ;
+FUNCTION:   void             glfwGetMonitorPos          ( GLFWmonitor* monitor,
+                                                          int* xpos,
+                                                          int* ypos ) ;
 FUNCTION:   void             glfwGetMonitorPhysicalSize ( GLFWmonitor* monitor,
                                                           int* width,
                                                           int* height ) ;
-FUNCTION:   char*            glfwGetMonitorName    ( GLFWmonitor* monitor ) ;
-FUNCTION:   GLFWmonitorfun   glfwSetMonitorCallback ( GLFWmonitorfun cbfun ) ;
-FUNCTION:   GLFWvidmode*     glfwGetVideoModes     ( GLFWmonitor* monitor, int* count ) ;
-FUNCTION:   void             glfwSetGamma          ( GLFWmonitor* monitor, float gamma ) ;
-FUNCTION:   GLFWgammaramp*   glfwGetGammaRamp      ( GLFWmonitor* monitor ) ;
-FUNCTION:   void             glfwSetGammaRamp      ( GLFWmonitor* monitor, GLFWgammaramp* ramp ) ;
-FUNCTION:   void             glfwDefaultWindowHints ( ) ;
-FUNCTION:   void             glfwWindowHint        ( int target, int hint ) ;
-FUNCTION:   void             glfwDestroyWindow     ( GLFWwindow* window ) ; ! not working ...
-FUNCTION:   int              glfwWindowShouldClose ( GLFWwindow* window ) ;
-FUNCTION:   void             glfwSetWindowShouldClose ( GLFWwindow* window, int value ) ;
-FUNCTION:   void             glfwSetWindowTitle    ( GLFWwindow* window, char* title ) ;
-FUNCTION:   void             glfwGetWindowPos      ( GLFWwindow* window, int* xpos, int* ypos ) ;
-FUNCTION:   void             glfwSetWindowPos      ( GLFWwindow* window, int xpos, int ypos ) ;
-FUNCTION:   void             glfwGetWindowSize     ( GLFWwindow* window, int* width, int* height ) ;
-FUNCTION:   void             glfwSetWindowSize     ( GLFWwindow* window, int width, int height ) ;
-FUNCTION:   void             glfwGetFramebufferSize ( GLFWwindow* window, int* width, int* height ) ;
-FUNCTION:   void             glfwIconifyWindow     ( GLFWwindow* window ) ;
-FUNCTION:   void             glfwRestoreWindow     ( GLFWwindow* window ) ;
-FUNCTION:   void             glfwShowWindow        ( GLFWwindow* window ) ;
-FUNCTION:   void             glfwHideWindow        ( GLFWwindow* window ) ;
+FUNCTION:   char*            glfwGetMonitorName         ( GLFWmonitor* monitor ) ;
+FUNCTION:   GLFWmonitorfun   glfwSetMonitorCallback     ( GLFWmonitorfun cbfun ) ;
+FUNCTION:   GLFWvidmode*     glfwGetVideoModes          ( GLFWmonitor* monitor, int* count ) ;
+FUNCTION:   void             glfwSetGamma               ( GLFWmonitor* monitor, float gamma ) ;
+FUNCTION:   GLFWgammaramp*   glfwGetGammaRamp           ( GLFWmonitor* monitor ) ;
+FUNCTION:   void             glfwSetGammaRamp           ( GLFWmonitor* monitor, GLFWgammaramp* ramp ) ;
+FUNCTION:   void             glfwDefaultWindowHints     ( ) ;
+FUNCTION:   void             glfwWindowHint             ( int target, int hint ) ;
+FUNCTION:   void             glfwDestroyWindow          ( GLFWwindow* window ) ; ! not working ...
+FUNCTION:   int              glfwWindowShouldClose      ( GLFWwindow* window ) ;
+FUNCTION:   void             glfwSetWindowShouldClose   ( GLFWwindow* window, int value ) ;
+FUNCTION:   void             glfwSetWindowTitle         ( GLFWwindow* window, char* title ) ;
+FUNCTION:   void             glfwGetWindowPos           ( GLFWwindow* window, int* xpos, int* ypos ) ;
+FUNCTION:   void             glfwSetWindowPos           ( GLFWwindow* window, int xpos, int ypos ) ;
+FUNCTION:   void             glfwGetWindowSize          ( GLFWwindow* window, int* width, int* height ) ;
+FUNCTION:   void             glfwSetWindowSize          ( GLFWwindow* window, int width, int height ) ;
+FUNCTION:   void             glfwGetFramebufferSize     ( GLFWwindow* window, int* width, int* height ) ;
+FUNCTION:   void             glfwIconifyWindow          ( GLFWwindow* window ) ;
+FUNCTION:   void             glfwRestoreWindow          ( GLFWwindow* window ) ;
+FUNCTION:   void             glfwShowWindow             ( GLFWwindow* window ) ;
+FUNCTION:   void             glfwHideWindow             ( GLFWwindow* window ) ;
+FUNCTION:   GLFWkeyfun       glfwSetKeyCallback         ( GLFWwindow* window, GLFWkeyfun cbfun ) ;
 <PRIVATE
 : string>char* ( string -- char* ) utf8 string>alien >c-ptr ;
 : int>int*     ( int    -- int*  ) int <ref> ;
@@ -308,6 +309,8 @@ PRIVATE>
 : glfw-get-video-modes ( count -- mode-struct )
     glfwGetPrimaryMonitor swap int>int* glfwGetVideoModes ;
 
-! Not working...
 : glfw-set-window-title ( GLFWwindow* title -- )
-    string>char* glfwSetWindowTitle ;
+    utf8 string>alien glfwSetWindowTitle ;
+
+! initializes glfw and creates window for testing purposes, duplicates window pointer
+: test-win ( -- GLFWwindow* GLFWwindow* ) glfwTerminate glfwInit drop 200 200 "test window" glfw-create-window dup ;
