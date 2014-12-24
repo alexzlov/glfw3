@@ -2,7 +2,7 @@
 ! See http://factorcode.org/license.txt for BSD license.
 USING: alien alien.c-types alien.libraries alien.parser alien.syntax
 alien.strings system combinators io.encodings.utf8 classes.struct
-alien.data kernel ;
+alien.data kernel io prettyprint system ;
 
 IN: glfw3
 
@@ -198,22 +198,6 @@ C-TYPE: GLFWwindow
 TYPEDEF:    GLFWmonitor*     GLFWmonitor
 TYPEDEF:    GLFWwindow*      GLFWwindow
 
-CALLBACK: void GLFWglproc               ( ) ;
-CALLBACK: void GLFWerrorfun             ( int errorCode, char* errorMessage ) ;
-CALLBACK: void GLFWwindowposfun         ( GLFWwindow window, int x, int y ) ;
-CALLBACK: void GLFWwindowsizefun        ( GLFWwindow window, int x, int y ) ;
-CALLBACK: void GLFWwindowclosefun       ( GLFWwindow window ) ;
-CALLBACK: void GLFWwindowrefreshfun     ( GLFWwindow window ) ;
-CALLBACK: void GLFWwindowfocusfun       ( GLFWwindow window, int n ) ;
-CALLBACK: void GLFWwindowiconifyfun     ( GLFWwindow window, int n ) ;
-CALLBACK: void GFLFWframebuffersizefun  ( GLFWwindow window, int x, int y ) ;
-CALLBACK: void GLFWmousebuttonfun       ( GLFWwindow window, int a, int b, int c ) ;
-CALLBACK: void GLFWcursorposfun         ( GLFWwindow window, double x, double y ) ;
-CALLBACK: void GLFWcursorenterfun       ( GLFWwindow window, int a ) ;
-CALLBACK: void GLFWscrollfun            ( GLFWwindow window, double x, double y ) ;
-CALLBACK: void GLFWkeyfun               ( GLFWwindow window, int a, int b, int c, int d ) ;
-CALLBACK: void GLFWcharfun              ( GLFWwindow window, uint code ) ;
-CALLBACK: void GLFWmonitorfun           ( GLFWmonitor monitor, uint code ) ;
 
 STRUCT: GLFWvidmode
     { width       int }
@@ -230,6 +214,35 @@ STRUCT: GLFWgammaramp
     { blue  ushort }
     { size  uint   } ;
 TYPEDEF: GLFWgammaramp glfw-gamma-ramp
+
+! =======================================================================================
+!                                      CALLBACKS
+! =======================================================================================
+CALLBACK: void GLFWglproc               ( ) ;
+CALLBACK: void GLFWerrorfun             ( int errorCode, char* errorMessage ) ;
+CALLBACK: void GLFWwindowposfun         ( GLFWwindow window, int x, int y ) ;
+CALLBACK: void GLFWwindowsizefun        ( GLFWwindow window, int x, int y ) ;
+CALLBACK: void GLFWwindowclosefun       ( GLFWwindow window ) ;
+CALLBACK: void GLFWwindowrefreshfun     ( GLFWwindow window ) ;
+CALLBACK: void GLFWwindowfocusfun       ( GLFWwindow window, int n ) ;
+CALLBACK: void GLFWwindowiconifyfun     ( GLFWwindow window, int n ) ;
+CALLBACK: void GFLFWframebuffersizefun  ( GLFWwindow window, int x, int y ) ;
+CALLBACK: void GLFWmousebuttonfun       ( GLFWwindow window, int a, int b, int c ) ;
+CALLBACK: void GLFWcursorposfun         ( GLFWwindow window, double x, double y ) ;
+CALLBACK: void GLFWcursorenterfun       ( GLFWwindow window, int a ) ;
+CALLBACK: void GLFWscrollfun            ( GLFWwindow window, double x, double y ) ;
+
+! @args:
+! GLFWwindow*
+! int a    - key that was pressed or released
+! int b    - scancode. The system specific scancode of the key
+! int c    - action GLFW_PRESS, GLFW_RELEASE or GLFW_REPEAT
+! int d    -  mods Bit field describing which modifier keys were held down
+CALLBACK: void GLFWkeyfun               ( GLFWwindow window, int a, int b, int c, int d ) ;
+
+CALLBACK: void GLFWcharfun              ( GLFWwindow window, uint code ) ;
+CALLBACK: void GLFWmonitorfun           ( GLFWmonitor monitor, uint code ) ;
+
 ! =======================================================================================
 !                                GLFW API functions
 ! =======================================================================================
@@ -294,7 +307,6 @@ PRIVATE>
     string>char*
     glfwGetPrimaryMonitor
     f glfwCreateWindow ;
-: glfw-terminate ( -- ) glfwTerminate ;
 
 ! Outputs something like "3.0.4 X11 GLX glXgetProcAddress clock_gettime /dev/js shared"
 : glfw-get-version-string ( -- version-string )
@@ -313,4 +325,14 @@ PRIVATE>
     utf8 string>alien glfwSetWindowTitle ;
 
 ! initializes glfw and creates window for testing purposes, duplicates window pointer
-: test-win ( -- GLFWwindow* GLFWwindow* ) glfwTerminate glfwInit drop 200 200 "test window" glfw-create-window dup ;
+: test-win ( -- GLFWwindow* GLFWwindow* ) 
+  glfwTerminate glfwInit drop 200 200 "test window" glfw-create-window dup ;
+
+: test-callback ( -- alien )
+  [
+      drop
+      GLFW_KEY_ESCAPE =
+      [ glfwTerminate ]
+      [  ] if
+      . . .
+  ] GLFWkeyfun ; inline
